@@ -1,18 +1,14 @@
-const Tutorial = require("../models/tutorial.model.js");
+const Tutorial = require("../models/crypto.model.js");
 // Create and Save a new Tutorial
 exports.create = (req, res) => {
 
 };
-// Retrieve all Tutorials from the database (with condition).
+// Retrieve all crypto from the database (with condition).
 exports.findAll = (req, res) => {
 
 };
 // Find a single Tutorial with a id
 exports.findOne = (req, res) => {
-
-};
-// find all published Tutorials
-exports.findAllPublished = (req, res) => {
 
 };
 // Update a Tutorial identified by the id in the request
@@ -23,7 +19,7 @@ exports.update = (req, res) => {
 exports.delete = (req, res) => {
 
 };
-// Delete all Tutorials from the database.
+// Delete all crypto from the database.
 exports.deleteAll = (req, res) => {
 
 };
@@ -37,43 +33,33 @@ exports.create = (req, res) => {
     }
     // Create a Tutorial
     const tutorial = new Tutorial({
-        title: req.body.title,
-        description: req.body.description,
-        published: req.body.published || false
+        ticker: req.body.ticker,
+        current_price: req.body.current_price,
     });
     // Save Tutorial in the database
     Tutorial.create(tutorial, (err, data) => {
         if (err)
             res.status(500).send({
                 message:
-                    err.message || "Some error occurred while creating the Tutorial."
+                    err.message || "Some error occurred while creating the Crypto."
             });
         else res.send(data);
     });
 };
 
-// Retrieve all Tutorials from the database (with condition).
+// Retrieve all crypto from the database (with condition).
 exports.findAll = (req, res) => {
-    const title = req.query.title;
-    Tutorial.getAll(title, (err, data) => {
+    const ticker = req.query.ticker;
+    Tutorial.getAll(ticker, (err, data) => {
         if (err)
             res.status(500).send({
                 message:
-                    err.message || "Some error occurred while retrieving tutorials."
+                    err.message || "Some error occurred while retrieving crypto."
             });
         else res.send(data);
     });
 };
-exports.findAllPublished = (req, res) => {
-    Tutorial.getAllPublished((err, data) => {
-        if (err)
-            res.status(500).send({
-                message:
-                    err.message || "Some error occurred while retrieving tutorials."
-            });
-        else res.send(data);
-    });
-};
+
 
 exports.findOne = (req, res) => {
     Tutorial.findById(req.params.id, (err, data) => {
@@ -139,8 +125,8 @@ exports.deleteAll = (req, res) => {
         if (err)
             res.status(500).send({
                 message:
-                    err.message || "Some error occurred while removing all tutorials."
+                    err.message || "Some error occurred while removing all crypto."
             });
-        else res.send({ message: `All Tutorials were deleted successfully!` });
+        else res.send({ message: `All crypto were deleted successfully!` });
     });
 };
