@@ -1,21 +1,36 @@
 const sql = require("./db.js");
 // constructor
-const Tutorial = function(tutorial) {
-    this.ticker = tutorial.ticker;
-    this.current_price = tutorial.current_price;
+const Crpyto = function(crpyto) {
+    this.symbol = crpyto.symbol;
+    this.symbolName = crpyto.symbolName;
+    this.buy = crpyto.buy;
+    this.sell = crpyto.sell;
+    this.changeRate = crpyto.changeRate;
+    this.changePrice = crpyto.changePrice;
+    this.high = crpyto.high;
+    this.low = crpyto.low;
+    this.vol = crpyto.vol;
+    this.volValue = crpyto.volValue;
+    this.last = crpyto.last;
+    this.averagePrice = crpyto.averagePrice;
+    this.takerFeeRate = crpyto.takerFeeRate;
+    this.makerFeeRate = crpyto.makerFeeRate;
+    this.takerCoefficient = crpyto.takerCoefficient;
+    this.makerCoefficient = crpyto.makerCoefficient;
+
 };
-Tutorial.create = (newTutorial, result) => {
-    sql.query("INSERT INTO crypto SET ?", newTutorial, (err, res) => {
+Crpyto.create = (newCrpyto, result) => {
+    sql.query("INSERT INTO crypto SET ?", newCrpyto, (err, res) => {
         if (err) {
             console.log("error: ", err);
             result(err, null);
             return;
         }
-        console.log("created tutorial: ", { id: res.insertId, ...newTutorial });
-        result(null, { id: res.insertId, ...newTutorial });
+        console.log("created crpyto: ", { id: res.insertId, ...newCrpyto });
+        result(null, { id: res.insertId, ...newCrpyto });
     });
 };
-Tutorial.findById = (id, result) => {
+Crpyto.findById = (id, result) => {
     sql.query(`SELECT * FROM crypto WHERE id = ${id}`, (err, res) => {
         if (err) {
             console.log("error: ", err);
@@ -23,18 +38,18 @@ Tutorial.findById = (id, result) => {
             return;
         }
         if (res.length) {
-            console.log("found tutorial: ", res[0]);
+            console.log("found crpyto: ", res[0]);
             result(null, res[0]);
             return;
         }
-        // not found Tutorial with the id
+        // not found Crpyto with the id
         result({ kind: "not_found" }, null);
     });
 };
-Tutorial.getAll = (ticker, result) => {
+Crpyto.getAll = (symbol, result) => {
     let query = "SELECT * FROM crypto";
-    if (ticker) {
-        query += ` WHERE ticker LIKE '%${ticker}%'`;
+    if (symbol) {
+        query += ` WHERE symbol LIKE '%${symbol}%'`;
     }
     sql.query(query, (err, res) => {
         if (err) {
@@ -47,10 +62,10 @@ Tutorial.getAll = (ticker, result) => {
     });
 };
 
-Tutorial.updateById = (id, tutorial, result) => {
+Crpyto.updateById = (id, crpyto, result) => {
     sql.query(
-        "UPDATE crypto SET ticker = ?, current_price = ? WHERE id = ?",
-        [tutorial.ticker, tutorial.current_price, id],
+        "UPDATE crypto SET symbol = ?, buy = ?, sell = ?, WHERE id = ?",
+        [crpyto.symbol, crpyto.buy, id],
         (err, res) => {
             if (err) {
                 console.log("error: ", err);
@@ -58,16 +73,16 @@ Tutorial.updateById = (id, tutorial, result) => {
                 return;
             }
             if (res.affectedRows == 0) {
-                // not found Tutorial with the id
+                // not found Crpyto with the id
                 result({ kind: "not_found" }, null);
                 return;
             }
-            console.log("updated tutorial: ", { id: id, ...tutorial });
-            result(null, { id: id, ...tutorial });
+            console.log("updated crpyto: ", { id: id, ...crpyto });
+            result(null, { id: id, ...crpyto });
         }
     );
 };
-Tutorial.remove = (id, result) => {
+Crpyto.remove = (id, result) => {
     sql.query("DELETE FROM crypto WHERE id = ?", id, (err, res) => {
         if (err) {
             console.log("error: ", err);
@@ -75,15 +90,15 @@ Tutorial.remove = (id, result) => {
             return;
         }
         if (res.affectedRows == 0) {
-            // not found Tutorial with the id
+            // not found Crpyto with the id
             result({ kind: "not_found" }, null);
             return;
         }
-        console.log("deleted tutorial with id: ", id);
+        console.log("deleted crpyto with id: ", id);
         result(null, res);
     });
 };
-Tutorial.removeAll = result => {
+Crpyto.removeAll = result => {
     sql.query("DELETE FROM crypto", (err, res) => {
         if (err) {
             console.log("error: ", err);
@@ -94,4 +109,4 @@ Tutorial.removeAll = result => {
         result(null, res);
     });
 };
-module.exports = Tutorial;
+module.exports = Crpyto;

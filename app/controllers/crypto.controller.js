@@ -1,5 +1,5 @@
-const Tutorial = require("../models/crypto.model.js");
-// Create and Save a new Tutorial
+const Crpyto = require("../models/crypto.model.js");
+// Create and Save a new Crpyto
 exports.create = (req, res) => {
 
 };
@@ -7,15 +7,15 @@ exports.create = (req, res) => {
 exports.findAll = (req, res) => {
 
 };
-// Find a single Tutorial with a id
+// Find a single Crpyto with a id
 exports.findOne = (req, res) => {
 
 };
-// Update a Tutorial identified by the id in the request
+// Update a Crpyto identified by the id in the request
 exports.update = (req, res) => {
 
 };
-// Delete a Tutorial with the specified id in the request
+// Delete a Crpyto with the specified id in the request
 exports.delete = (req, res) => {
 
 };
@@ -31,13 +31,27 @@ exports.create = (req, res) => {
             message: "Content can not be empty!"
         });
     }
-    // Create a Tutorial
-    const tutorial = new Tutorial({
-        ticker: req.body.ticker,
-        current_price: req.body.current_price,
+    // Create a Crpyto
+    const crpyto = new Crpyto({
+        symbol: req.body.symbol,
+        symbolName: req.body.symbolName,
+        buy: req.body.buy,
+        sell: req.body.sell,
+        changeRate: req.body.changeRate,
+        changePrice: req.body.changePrice,
+        high: req.body.high,
+        low: req.body.low,
+        vol: req.body.vol,
+        volValue: req.body.volValue,
+        last: req.body.last,
+        averagePrice: req.body.averagePrice,
+        takerFeeRate: req.body.takerFeeRate,
+        makerFeeRate: req.body.makerFeeRate,
+        takerCoefficient: req.body.takerCoefficient,
+        makerCoefficient: req.body.makerCoefficient,
     });
-    // Save Tutorial in the database
-    Tutorial.create(tutorial, (err, data) => {
+    // Save Crpyto in the database
+    Crpyto.create(crpyto, (err, data) => {
         if (err)
             res.status(500).send({
                 message:
@@ -49,8 +63,8 @@ exports.create = (req, res) => {
 
 // Retrieve all crypto from the database (with condition).
 exports.findAll = (req, res) => {
-    const ticker = req.query.ticker;
-    Tutorial.getAll(ticker, (err, data) => {
+    const symbol = req.query.symbol;
+    Crpyto.getAll(symbol, (err, data) => {
         if (err)
             res.status(500).send({
                 message:
@@ -62,15 +76,15 @@ exports.findAll = (req, res) => {
 
 
 exports.findOne = (req, res) => {
-    Tutorial.findById(req.params.id, (err, data) => {
+    Crpyto.findById(req.params.id, (err, data) => {
         if (err) {
             if (err.kind === "not_found") {
                 res.status(404).send({
-                    message: `Not found Tutorial with id ${req.params.id}.`
+                    message: `Not found Crpyto with id ${req.params.id}.`
                 });
             } else {
                 res.status(500).send({
-                    message: "Error retrieving Tutorial with id " + req.params.id
+                    message: "Error retrieving Crpyto with id " + req.params.id
                 });
             }
         } else res.send(data);
@@ -85,18 +99,18 @@ exports.update = (req, res) => {
         });
     }
     console.log(req.body);
-    Tutorial.updateById(
+    Crpyto.updateById(
         req.params.id,
-        new Tutorial(req.body),
+        new Crpyto(req.body),
         (err, data) => {
             if (err) {
                 if (err.kind === "not_found") {
                     res.status(404).send({
-                        message: `Not found Tutorial with id ${req.params.id}.`
+                        message: `Not found Crpyto with id ${req.params.id}.`
                     });
                 } else {
                     res.status(500).send({
-                        message: "Error updating Tutorial with id " + req.params.id
+                        message: "Error updating Crpyto with id " + req.params.id
                     });
                 }
             } else res.send(data);
@@ -105,23 +119,23 @@ exports.update = (req, res) => {
 };
 
 exports.delete = (req, res) => {
-    Tutorial.remove(req.params.id, (err, data) => {
+    Crpyto.remove(req.params.id, (err, data) => {
         if (err) {
             if (err.kind === "not_found") {
                 res.status(404).send({
-                    message: `Not found Tutorial with id ${req.params.id}.`
+                    message: `Not found Crpyto with id ${req.params.id}.`
                 });
             } else {
                 res.status(500).send({
-                    message: "Could not delete Tutorial with id " + req.params.id
+                    message: "Could not delete Crpyto with id " + req.params.id
                 });
             }
-        } else res.send({ message: `Tutorial was deleted successfully!` });
+        } else res.send({ message: `Crpyto was deleted successfully!` });
     });
 };
 
 exports.deleteAll = (req, res) => {
-    Tutorial.removeAll((err, data) => {
+    Crpyto.removeAll((err, data) => {
         if (err)
             res.status(500).send({
                 message:
